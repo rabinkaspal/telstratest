@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 import rabin.com.telstratest.R;
@@ -42,7 +44,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
     }
 
     @Override
-    public ItemsAdapter.ItemViewHolder onCreateViewHolder(ViewGroup parent,int viewType) {
+    public ItemsAdapter.ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.tls_list_item, parent, false);
         return new ItemViewHolder(view);
     }
@@ -51,17 +53,29 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
     @Override
     public void onBindViewHolder(ItemViewHolder holder, final int position) {
         String title = items.get(position).getTitle();
-        if (title == null){
+        if (title == null) {
             holder.tlsItemTitle.setText("--- NO DATA ---");
-        }else{
+        } else {
             holder.tlsItemTitle.setText(title);
         }
 
         String desc = items.get(position).getDescription();
-        if (desc == null){
+        if (desc == null) {
             holder.tlsItemContent.setText("--- NO DATA ---");
-        }else{
+        } else {
             holder.tlsItemContent.setText(desc);
+        }
+
+        String imageUrl = items.get(position).getImageHref();
+        if (imageUrl != null) {
+            Picasso.with(context)
+                    .load(imageUrl)
+                    .placeholder(R.drawable.placeholder)
+                    .error(R.drawable.no_image)
+                    .into(holder.tlsItemImage);
+
+        } else {
+
         }
 
     }
