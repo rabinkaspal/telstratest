@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">TelstraTest</string>
     <string name="action_settings">Settings</string>
-    <string name="feed_url">https://dl.dropboxusercontent.com/s/2iodh4vg0eortkl/facts.json</string>
 
 </resources>
