@@ -10,7 +10,7 @@ import retrofit2.http.GET;
 
 public interface ApiInterface {
 
-    @GET("/")
+    @GET("/s/2iodh4vg0eortkl/facts.json")
     Call<ItemResponse> getItems();
 
 }
