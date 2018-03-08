@@ -19,6 +19,11 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -36,4 +41,6 @@ dependencies {
 
     //image loading library
     compile 'com.squareup.picasso:picasso:2.4.0'
+
+
 }

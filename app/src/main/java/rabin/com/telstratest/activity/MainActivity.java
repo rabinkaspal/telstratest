@@ -1,5 +1,6 @@
 package rabin.com.telstratest.activity;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView tlsListView;
     ApiInterface apiService;
     SwipeRefreshLayout tlsSwipeRefresh;
+    int scrollPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,18 @@ public class MainActivity extends AppCompatActivity {
 
         getRowData();
 
+        tlsListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                final LinearLayoutManager layoutManager=(LinearLayoutManager) recyclerView.getLayoutManager();
+
+                scrollPosition = layoutManager.findLastCompletelyVisibleItemPosition();
+
+            }
+        });
+
     }
 
 
@@ -73,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
                 List<Item> items = response.body().getRows();
                 tlsListView.setAdapter(new ItemsAdapter(getApplicationContext(), items));
+                tlsListView.smoothScrollToPosition(scrollPosition);
             }
 
             @Override
@@ -84,6 +99,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        tlsListView.smoothScrollToPosition(scrollPosition + 1);
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
