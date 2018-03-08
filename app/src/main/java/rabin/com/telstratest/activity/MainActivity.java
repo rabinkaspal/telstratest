@@ -3,6 +3,7 @@ package rabin.com.telstratest.activity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     RecyclerView tlsListView;
     ApiInterface apiService;
+    SwipeRefreshLayout tlsSwipeRefresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,24 +38,36 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        tlsSwipeRefresh = (SwipeRefreshLayout) findViewById(R.id.tlsSwipeRefresh);
+        tlsSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getRowData();
+            }
+        });
+
         tlsListView = (RecyclerView) findViewById(R.id.tlsListView);
         tlsListView.setLayoutManager(new LinearLayoutManager(this));
         tlsListView.setHasFixedSize(true);
 
         apiService = ApiClient.getClient().create(ApiInterface.class);
 
+
+
         getRowData();
 
     }
 
 
-    public void getRowData(){
+    public void getRowData() {
+
+        tlsSwipeRefresh.setRefreshing(true);
 
         Call<ItemResponse> call = apiService.getItems();
         call.enqueue(new Callback<ItemResponse>() {
             @Override
             public void onResponse(Call<ItemResponse> call, Response<ItemResponse> response) {
-
+                tlsSwipeRefresh.setRefreshing(false);
                 String title = response.body().getTitle();
                 getSupportActionBar().setTitle(title);
 
@@ -63,7 +77,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ItemResponse> call, Throwable t) {
-                Log.e(TAG, "ERROR: "+ t.toString());
+                Log.e(TAG, "ERROR: " + t.toString());
+                tlsSwipeRefresh.setRefreshing(false);
             }
         });
 
