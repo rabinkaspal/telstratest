@@ -27,6 +27,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     RecyclerView tlsListView;
+    ApiInterface apiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,14 @@ public class MainActivity extends AppCompatActivity {
         tlsListView.setLayoutManager(new LinearLayoutManager(this));
         tlsListView.setHasFixedSize(true);
 
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        apiService = ApiClient.getClient().create(ApiInterface.class);
+
+        getRowData();
+
+    }
+
+
+    public void getRowData(){
 
         Call<ItemResponse> call = apiService.getItems();
         call.enqueue(new Callback<ItemResponse>() {
@@ -59,13 +67,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
     }
-
-
-
-
 
 
     @Override

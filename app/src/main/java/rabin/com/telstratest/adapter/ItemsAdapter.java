@@ -36,7 +36,6 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
         }
     }
 
-
     public ItemsAdapter(Context context, List<Item> items) {
         this.context = context;
         this.items = items;
@@ -51,8 +50,20 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
 
     @Override
     public void onBindViewHolder(ItemViewHolder holder, final int position) {
-        holder.tlsItemTitle.setText(items.get(position).getTitle());
-        holder.tlsItemContent.setText(items.get(position).getDescription());
+        String title = items.get(position).getTitle();
+        if (title == null){
+            holder.tlsItemTitle.setText("--- NO DATA ---");
+        }else{
+            holder.tlsItemTitle.setText(title);
+        }
+
+        String desc = items.get(position).getDescription();
+        if (desc == null){
+            holder.tlsItemContent.setText("--- NO DATA ---");
+        }else{
+            holder.tlsItemContent.setText(desc);
+        }
+
     }
 
     @Override
